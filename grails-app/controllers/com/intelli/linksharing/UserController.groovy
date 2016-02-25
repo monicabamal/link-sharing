@@ -8,6 +8,11 @@ class UserController {
     }
 
     def  register(){
+        if(session.user){
 
+        }
+        else{
+            render "success"
+        }
     }
 }

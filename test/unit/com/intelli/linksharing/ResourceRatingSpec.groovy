@@ -18,45 +18,46 @@ class ResourceRatingSpec extends Specification {
     void "test rating by user"() {
 
         setup: "user giving rating to resource"
-        User user = new User(firstName: "monica", lastName: "bamal", email: "ada@b.com", password: "123456", username: "adsjhd")
-        Topic topic = new Topic(name: "grails", visibility: Topic.VisibilityType.PUBLIC, createdBy: user)
-        LinkResource linkResource = new LinkResource(description: " this is helpfull", createdBy: user, topic: topic, url: "http://grails.github.io/grails-doc/2.5.1/ref/Constraints/url.html")
-        ResourceRating resourceRating = new ResourceRating(resources: linkResource, user: user, score: value)
-        println " hello"
+        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
+        Topic topic = new Topic(name: "Java", visibility: enums.Visibility.PUBLIC, createdBy: user)
+        LinkResource linkResource = new LinkResource(url: url,description:"Instrumentation API" ,topic:topic ,createdBy:user )
+        ResourceRating resourceRating = new ResourceRating(resource: linkResource, user: user, score: value)
 
-        when: "check for valiation"
+        when: "check for validation"
         Boolean result = resourceRating.validate()
 
         then: "test the result"
         result == valid
 
         where: "trying different values"
-        sno | value | valid
-        1   | 0     | false
-        2   | 7     | false
-        3   | 4     | true
+        sno|value|valid
+        1  |0    |false
+        2  |7    |false
+        3  |4    |true
 
 
     }
 
     void "user unique resource "() {
+
         setup: "user rated resource"
-        User user = new User(firstName: "monica1", lastName: "bamal1", email: "adsda@b.com", password: "qwerty", username: "abc")
-        LinkResource linkResource = new LinkResource(description: " this is helpfull", createdBy: user, topic: "grails", url: "http://grails.github.io/grails-doc/2.5.1/ref/Constraints/url.html")
-        ResourceRating resourceRating = new ResourceRating(resources: linkResource, user: user, score: 5)
+        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
+        Topic topic = new Topic(name: "Java", visibility: enums.Visibility.PUBLIC, createdBy: user)
+        LinkResource linkResource = new LinkResource(url: url,description:"Instrumentation API" ,topic:topic ,createdBy:user )
+        ResourceRating resourceRating = new ResourceRating(resource: linkResource, user: user, score: 5)
 
         when:
         resourceRating.save()
 
         then:
-        resourceRating.count() == 1
-        println ${resourceRating.errors}
+        ResourceRating.count() == 1
+
         when:
-        ResourceRating resourceRatingNew = new ResourceRating(resources: linkResource, user: user, score: 5)
-        resourceRatingNew.save()
+        ResourceRating resourceRatingNew = new ResourceRating(resource: linkResource, user: user, score: 3)
+        resourceRatingNew.save(flush: true)
 
         then:
-        resourceRating.count() == 1
+        ResourceRating.count() == 1
         resourceRatingNew.errors.allErrors.size() == 1
         resourceRatingNew.errors.getFieldErrorCount('user') == 1
 

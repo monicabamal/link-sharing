@@ -18,44 +18,70 @@ class UserSpec extends Specification {
     }
 
 
-    def "Check #email_id"() {
+    def "Check email and user uniqueness"() {
         given: "User Object"
-        User user = new User(email_id: "abc@gmail.com", password: "defger",firstName: "monica",lastName: "bamal");
+        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
 
         when: "User will save"
         user.save(flush: true);
 
-        then: ""
+        then: "check no. of records saved"
         user.count() == 1;
 
         when: ""
-        user = new User(email_id: "ffgtrg", firstName: "monica", lastName: "bamal", password: "deefref", userName: "jsnaj");
-        user.save(flush: true);
+        user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
+            user.save(flush: true);
 
         then:
         user.count() == 1;
-        user.errors.allErrors.size() == 1;
-        user.errors.getFieldErrorCount('email_id') == 1;
+        user.errors.allErrors != null
+        user.errors.getFieldErrorCount('email') == 1;
+        user.errors.getFieldErrorCount('username') == 1;
 
     }
 
-    def "checking all fields with #password"() {
+    def "checking all fields"() {
 
         given: "Create object"
-        User user = new User(password: password, userName: userName, firstName: firstName, lastName: lastName, email_id: email_id)
+        User user = new User(email: email,userName: userName,password: password, firstName: firstName, lastName: lastName)
 
         when:
-        user.save(flush: true)
         boolean result = user.validate()
         then:
         result == validate
 
         where:
-        password | userName      | firstName | lastName | email_id     | validate
-        "s"      | "Monica Bamal" | "Monica"   | "Bamal"  | "abc@s.com" | false
-        "s"      | "Monica Bamal" | "Monica"   | "Bamal"  | "dsdj "      | false
-        "swer"   | "Monica Bamal" | "Monica"   | "Bamal"  | "sad@s.com" | false
-        "swerew" | "Monica Bamal" | "Monica"   | "Bamal"  | "sdaf@s.com" | true
+         sno|  password |   userName    |firstName| lastName |    email      | validate
+          1 |"igdefault"|"Monica Bamal" |"Monica" | "Bamal"  |     ""        | false
+          2 |"igdefault"|"Monica Bamal" |"Monica" | "Bamal"  |    null       | false
+          3 |"igdefault"|"Monica Bamal" |"Monica" | "Bamal"  |"invalid email"| false
+          4 |"igdefault"|    null       |"Monica" | "Bamal"  |"abc@gmail.com"| false
+          5 |""         |"Monica Bamal" |"Monica" | "Bamal"  |"abc@gmail.com"| false
+          6 |null       |"Monica Bamal" |"Monica" | "Bamal"  |"abc@gmail.com"| false
+          7 |"min2"     |"Monica Bamal" |"Monica" | "Bamal"  |"abc@gmail.com"| false
+          8 |"igdefault"|"Monica Bamal" |  ""     | "Bamal"  |"abc@gmail.com"| false
+          9 |"igdefault"|"Monica Bamal" |  null   | "Bamal"  |"abc@gmail.com"| false
+         10 |"igdefault"|"Monica Bamal" |"Monica" |   ""     |"abc@gmail.com"| false
+         11 |"igdefault"|"Monica Bamal" |"Monica" |   null   |"abc@gmail.com"| false
+
+    }
+
+    def "test transient field getName"() {
+
+        given: "User Object"
+        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: firstname,lastName: lastname);
+
+        when: "access transient field"
+        String name = user.name
+
+        then: ""
+        name == result
+
+        where:
+        sno|firstname|lastname |result
+         1 | "Monica"| "Bamal" |"Monica Bamal"
+         2 | "Vikram"|"Chandel"|"Vikram Chandel"
+
     }
 
 }

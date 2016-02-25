@@ -8,10 +8,10 @@ class TopicController {
             flash.error = 'No topic exists in database'
             redirect(controller: 'login')
         }
-        else if(topic.visibility == Topic.VisibilityType.PUBLIC){
+        else if(topic.visibility == enums.Visibility.PUBLIC){
             render 'Success'
         }
-        else if(topic.visibility == Topic.VisibilityType.PRIVATE){
+        else if(topic.visibility == enums.Visibility.PRIVATE){
             Subscription subscription = Subscription.findByUserAndTopic(session.user, topic)
             if(subscription)
                 render 'Success'

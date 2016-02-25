@@ -1,6 +1,8 @@
 package com.intelli.linksharing
 
+import enums.Visibility
 import grails.test.mixin.TestFor
+import spock.lang.IgnoreRest
 import spock.lang.Specification
 
 /**
@@ -15,12 +17,11 @@ class DocumentResourceSpec extends Specification {
     def cleanup() {
     }
 
-
-    def "test something"() {
+    def "test filepath of resource"() {
         setup: "user added resourse document"
-        User user = new User(firstName: "Monica", lastName: "Bamal", email: "adfx@b.com", password: "qwsxerty", username: "abc")
-        Topic topic = new Topic(name: "grails", visibility: Topic.VisibilityType.PUBLIC, createdBy: user)
-        DocumentResource documentResource = new DocumentResource(filePath: filepath, description: "this is helpfull", topic: topic, createdBy: user)
+        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
+        Topic topic = new Topic(name: "Java", visibility: enums.Visibility.PUBLIC, createdBy: user)
+        DocumentResource documentResource = new DocumentResource(filePath: filepath, description: "topic description", topic: topic, createdBy: user)
 
         when: "check for validation"
         Boolean result = documentResource.validate()

@@ -14,11 +14,13 @@ class ApplicationFilters {
                 log.info('Inside after view filter')
             }
         }
-        //loginCheck(controller: '*',controllerExclude: 'login'){
-           // if(session.user){
-            //    redirect(controller: 'login')
-            //}
+        loginCheck(controller: '*',controllerExclude: 'login'){
+            before = {
+                if(session.user){
+                    redirect(controller: 'login')
+                }
+            }
 
-       // }
+        }
     }
 }

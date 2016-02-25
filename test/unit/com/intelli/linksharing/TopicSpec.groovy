@@ -1,9 +1,12 @@
 package com.intelli.linksharing
 
 import grails.test.mixin.TestFor
+import spock.lang.IgnoreRest
 import spock.lang.Specification
 
 import java.beans.Visibility
+
+import static java.beans.Visibility.*
 
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
@@ -17,22 +20,21 @@ class TopicSpec extends Specification {
     def cleanup() {
     }
 
+    def "test topic uniqueness per user"() {
 
-    def "test something"() {
         given: ""
         String topicName = "Grails";
+        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
+        Topic topic = new Topic(name: topicName, createdBy: user, visibility: enums.Visibility.PUBLIC);
 
-
-        user = new User(email_id: email_id, firstName: "monica", lastName: "bamal", password: "deefref", userName: "jsnaj");
-        Topic topic = new Topic(name: topicName, createdBy: user, visibility: Topic.VisibilityType.PUBLIC);
         when: "User will save"
         topic.save();
 
-        then: ""
+        then: "check whether topic is saved or not"
         topic.count() == 1;
 
-        when: ""
-        Topic newTopic = new Topic(name: topicName, createdBy: user, visibility: Topic.VisibilityType.PUBLIC);
+        when: "topic with same name"
+        Topic newTopic = new Topic(name: topicName, createdBy: user, visibility: enums.Visibility.PUBLIC);
         newTopic.save();
 
         then:
@@ -45,9 +47,9 @@ class TopicSpec extends Specification {
 
     def "Visibility should not be null & must be enum"() {
         setup: "user created topic"
-        Topic topic = new Topic(name: name, visibility: Topic.VisibilityType.PUBLIC)
+        Topic topic = new Topic(name: name, visibility:visibility )
 
-        when: "check for valiation"
+        when: "check for validation"
         Boolean result = topic.validate()
 
         then: "test the result"
@@ -58,8 +60,10 @@ class TopicSpec extends Specification {
         sno | name     | visibility | valid
         1   | "grails" | " "        | false
         2   | "java"   | null       | false
-        3   | "grails" | "PUBLIC"   | true
-        4   | "grails" | "PRIVATE"  | true
+        3   | "grails" | "PUBLIC"   | false
+        4   | "grails" | "PRIVATE"  | false
+        5   | ""       | "xyz"      | false
+        5   | null     | "xyz"      | false
         5   | "grails" | "xyz"      | false
 
     }

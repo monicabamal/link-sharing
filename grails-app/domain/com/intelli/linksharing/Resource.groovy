@@ -2,8 +2,8 @@ package com.intelli.linksharing
 
 abstract class Resource {
 
-    User createdBy
     String description
+    User createdBy
     Topic topic
     Date dateCreated
     Date lastUpdated

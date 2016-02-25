@@ -1,26 +1,19 @@
 package com.intelli.linksharing
 
-import org.apache.commons.lang.enums.Enum
+import enums.Visibility
 
 class Topic {
 
-    enum VisibilityType {
-        PUBLIC,
-        PRIVATE,
-        DEFAULT,
-        NONE
-    }
-
     String name
-    VisibilityType visibility = VisibilityType.DEFAULT
     User createdBy
     Date dateCreated
     Date lastUpdated
+    Visibility visibility = Visibility.PUBLIC
 
     static  hasMany = [subscriptions: Subscription,resources: Resource]
 
     static constraints = {
-        name  blank: false, unique: ['createdBy']
-        visibility inList: VisibilityType.values().toList()
+        name  blank: false, unique: ["createdBy"]
+        visibility inList: Visibility.values().toList()
     }
 }

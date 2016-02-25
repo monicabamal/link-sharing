@@ -1,14 +1,12 @@
 package com.intelli.linksharing
 
-class Subscription {
+import enums.Seriousness
 
-    enum SeriousnessType{
-       CASUAL
-    }
+class Subscription implements  Serializable{
 
-    User user
     Topic topic
-    SeriousnessType seriousness
+    User user
+    Seriousness seriousness
     Date dateCreated
     Date lastUpdated
 

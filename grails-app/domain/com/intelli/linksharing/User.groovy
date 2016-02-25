@@ -6,6 +6,7 @@ import com.mysql.jdbc.Blob
 class User {
 
     String email
+    String username
     String password
     String firstName
     String lastName
@@ -21,6 +22,7 @@ class User {
 
     static constraints = {
         email unique: true, email: true, blank: false
+        username unique: true
         password  blank: false, minSize: 5
         firstName blank: false
         lastName  blank: false
@@ -30,10 +32,10 @@ class User {
     }
 
     static mapping = {
-        photo sqlType: 'LONGBLOB'
+        photo sqlType: "longblob"
     }
 
     String getName(){
-        "$firstName $lastName"
+        "${firstName} ${lastName}"
     }
 }

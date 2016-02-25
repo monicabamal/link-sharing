@@ -1,6 +1,7 @@
 package com.intelli.linksharing
 
 import grails.test.mixin.TestFor
+import spock.lang.IgnoreRest
 import spock.lang.Specification
 
 /**
@@ -16,25 +17,27 @@ class ReadingItemSpec extends Specification {
     def cleanup() {
     }
 
-    void "test something"() {
+    @IgnoreRest
+    void "test resource uniqueness per user"() {
         setup: "user rated resource"
-        User user = new User(firstName: "monica", lastName: "bamal", email: "daf@b.com", password: "qwerty", username: "abc")
-        LinkResource linkResource = new LinkResource(description: " this is helpfull", createdBy: user, topic:"grails", url: "http://grails.github.io/grails-doc/2.5.1/ref/Constraints/url.html")
-        ReadingItem readingItem= new ReadingItem(resources: linkResource, user: user, isRead:true)
+        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
+        Topic topic = new Topic(name: "Java", visibility: enums.Visibility.PUBLIC, createdBy: user)
+        LinkResource linkResource = new LinkResource(url: url,description:"Instrumentation API" ,topic:topic ,createdBy:user )
+        ReadingItem readingItem= new ReadingItem(resource: linkResource, user: user, isRead:true)
 
         when:
-        readingItem.save()
+        readingItem.save(flush: true)
 
         then:
-        readingItem.count() == 1
+        ReadingItem.count() == 1
 
         when:
-        ReadingItem readingItemNew= new ReadingItem(resources: linkResource, user: user, isRead:true)
-        readingItemNew.save()
+        ReadingItem readingItemNew= new ReadingItem(resource: linkResource, user: user, isRead:false)
+        readingItemNew.save(flush: true)
 
         then:
-        readingItem.count() == 1
+        ReadingItem.count() == 1
         readingItemNew.errors.allErrors.size() == 1
-        readingItemNew.errors.getFieldErrorCount('resources') == 1
+        readingItemNew.errors.getFieldErrorCount('resource') == 1
     }
 }

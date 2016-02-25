@@ -1,6 +1,7 @@
 package com.intelli.linksharing
 
 import grails.test.mixin.TestFor
+import spock.lang.IgnoreRest
 import spock.lang.Specification
 
 /**
@@ -15,11 +16,11 @@ class LinkResourceSpec extends Specification {
     def cleanup() {
     }
 
-    void "test something"() {
+    void "validate link resource URL"() {
         setup: "user created Resource"
-        User user = new User(firstName: "monica", lastName: "bamal", email: "aef@b.com", password: "qwertdfy", username: "abc")
-        Topic topic = new Topic(name:"grails", visibility:Topic.VisibilityType.PUBLIC, createdBy: user)
-        LinkResource linkResource = new LinkResource(url: url,description:"this is helpfull" ,topic:topic ,createdBy:user )
+        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
+        Topic topic = new Topic(name: "Java", visibility: enums.Visibility.PUBLIC, createdBy: user)
+        LinkResource linkResource = new LinkResource(url: url,description:"Instrumentation API" ,topic:topic ,createdBy:user )
 
         when: "check for validation"
         Boolean result = linkResource.validate()
@@ -29,10 +30,11 @@ class LinkResourceSpec extends Specification {
 
         where: "trying different values"
 
-        sno | url                                                                 | valid
-        1   | " "                                                                 | false
-        2   | null                                                                | false
-        3   | "http://grails.github.io/grails-doc/2.5.1/ref/Constraints/url.html" | true
+        sno |url                                                                 |valid
+        1   |" "                                                                 |false
+        2   |null                                                                |false
+        3   |"http://grails.github.io/grails-doc/2.5.1/ref/Constraints/url.html" |true
+        4   |"dscsdfsdvf"                                                        |false
 
 
     }
