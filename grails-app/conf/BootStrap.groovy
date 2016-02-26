@@ -9,7 +9,6 @@ import com.intelli.linksharing.User
 import enums.Seriousness
 import enums.Visibility
 import groovy.LinkSharingConstants
-import groovy.LonkSharingConstants
 
 class BootStrap {
 
@@ -97,7 +96,7 @@ class BootStrap {
         List<ReadingItem> readingItems = []
         User.list().each { user ->
             Subscription.findAllByUser(user).each {subscription ->
-                Resource.findAllByCreatedByNotEqual(subscription.topic.createdBy).each { resource ->
+                Resource.findAllByCreatedByNotEqualAndTopic(subscription.topic.createdBy, subscription.topic).each { resource ->
                     if(!ReadingItem.findByResourceAndUser(resource, user)){
                         readingItems.add(new ReadingItem(user: user, resource: resource, isRead: false))
                     }

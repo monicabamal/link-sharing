@@ -4,7 +4,7 @@ class TopicController {
 
     def show(int id) {
         Topic topic = Topic.findById(id)
-        if(topic){
+        if(!topic){
             flash.error = 'No topic exists in database'
             redirect(controller: 'login')
         }
@@ -12,10 +12,10 @@ class TopicController {
             render 'Success'
         }
         else if(topic.visibility == enums.Visibility.PRIVATE){
-            if(Subscription.findByUserAndTopic(session.user, topic))
+            if(Subscription.countByUserAndTopic(session.user, topic))
                 render 'Success'
             else {
-                flash.error = 'No suscription found'
+                flash.error = "${session.user.username} is not subscribed to topic - ${topic.name}"
                 redirect(controller: 'login')
             }
 

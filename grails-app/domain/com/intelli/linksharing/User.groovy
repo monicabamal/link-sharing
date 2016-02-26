@@ -29,13 +29,12 @@ class User {
         photo nullable: true
         admin nullable: true
         active nullable: true
-
-      /*  confirmpassword bindable:true, validator:{val, obj ->
+       confirmpassword bindable:true, validator:{val, obj ->
                                                     if(!session.user){
-                                                       if(val != obj.password)  return 'confirm password did not match with pasword'
+                                                      if(val != obj.password)  return 'confirm password did not match with pasword'
                                                         if(val == null) return 'confirm password is null'
-                                                    }
-                                                }*/
+                                                     }
+                                                }
     }
 
     static mapping = {
