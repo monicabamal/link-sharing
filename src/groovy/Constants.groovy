@@ -1,8 +1,8 @@
 package groovy
 
-class LonkSharingConstants {
+class LinkSharingConstants {
 
 
-    static final DEFAULT_PASSWORD = 'default123'
+    static final DEFAULT_PASSWORD = 'igdefault'
 
 }

@@ -12,8 +12,7 @@ class TopicController {
             render 'Success'
         }
         else if(topic.visibility == enums.Visibility.PRIVATE){
-            Subscription subscription = Subscription.findByUserAndTopic(session.user, topic)
-            if(subscription)
+            if(Subscription.findByUserAndTopic(session.user, topic))
                 render 'Success'
             else {
                 flash.error = 'No suscription found'

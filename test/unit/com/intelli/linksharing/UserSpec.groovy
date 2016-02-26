@@ -84,5 +84,21 @@ class UserSpec extends Specification {
 
     }
 
+    def "check toString method"(){
+
+        given:
+        User user = new User(email: "abc@gmail.com",username: username, password: "igdefault",firstName: "monica",lastName: "bamal");
+
+        expect:
+        user.toString() == result
+
+        where:
+        sno|    username    |  result
+         1 | "monica bamal" |"monica bamal"
+         2 | "monica1 bamal"|"monica1 bamal"
+
+
+    }
+
 }
 

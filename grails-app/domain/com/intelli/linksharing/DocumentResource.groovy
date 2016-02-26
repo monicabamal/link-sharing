@@ -7,4 +7,5 @@ class DocumentResource extends Resource {
     static constraints = {
         filepath blank: false
     }
+
 }

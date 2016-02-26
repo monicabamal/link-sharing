@@ -38,5 +38,22 @@ class LinkResourceSpec extends Specification {
 
 
     }
+
+    def "check toString method"(){
+
+        given:
+        LinkResource linkResource = new LinkResource(url: url);
+
+        expect:
+        linkResource.toString() == result
+
+        where:
+        sno|            url           |        result
+         1 | "http://www.google.com"  |"http://www.google.com"
+         2 | "http://www.facebook.com"|"http://www.facebook.com"
+
+
+    }
+
 }
 

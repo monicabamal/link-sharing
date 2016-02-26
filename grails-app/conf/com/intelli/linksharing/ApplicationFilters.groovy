@@ -14,7 +14,7 @@ class ApplicationFilters {
                 log.info('Inside after view filter')
             }
         }
-        loginCheck(controller: '*',controllerExclude: 'login'){
+        loginCheck(controller: '*', controllerExclude: 'login'){
             before = {
                 if(session.user){
                     redirect(controller: 'login')

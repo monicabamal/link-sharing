@@ -38,4 +38,21 @@ class DocumentResourceSpec extends Specification {
 
 
     }
+
+
+    def "check toString method"(){
+
+        given:
+        DocumentResource documentResource = new DocumentResource(filepath: filepath);
+
+        expect:
+        documentResource.toString() != result
+
+        where:
+        sno|   filepath  |       result
+         1 | "/home/ttnd"|"http://www.google.com"
+         2 | "a/b/c/d"   |"http://www.facebook.com"
+
+
+    }
 }

@@ -16,7 +16,7 @@ class User {
     Date dateCreated
     Date lastUpdated
 
-    static transients = ['name']
+    static transients = ['name','confirmpassword']
 
     static  hasMany = [topics: Topic,subscriptions: Subscription,readingItems: ReadingItem,resources: Resource]
 
@@ -29,6 +29,13 @@ class User {
         photo nullable: true
         admin nullable: true
         active nullable: true
+
+      /*  confirmpassword bindable:true, validator:{val, obj ->
+                                                    if(!session.user){
+                                                       if(val != obj.password)  return 'confirm password did not match with pasword'
+                                                        if(val == null) return 'confirm password is null'
+                                                    }
+                                                }*/
     }
 
     static mapping = {
@@ -37,5 +44,10 @@ class User {
 
     String getName(){
         "${firstName} ${lastName}"
+    }
+
+    @Override
+    String toString(){
+        username
     }
 }

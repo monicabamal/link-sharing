@@ -67,4 +67,20 @@ class TopicSpec extends Specification {
         5   | "grails" | "xyz"      | false
 
     }
+
+    def "check toString method"(){
+
+        given:
+        Topic topic = new Topic(name: name )
+
+        expect:
+        topic.toString() == result
+
+        where:
+        sno|  name  | result
+         1 |"topic1"|"topic1"
+         2 |"topic2"|"topic2"
+
+
+    }
 }
