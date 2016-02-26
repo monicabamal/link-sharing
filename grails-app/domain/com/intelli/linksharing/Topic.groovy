@@ -20,11 +20,11 @@ class Topic {
 
     def afterInsert(){
         log.info("automatically subscribing user created topics to that user")
-        log.info("User - ${createdBy}, Topic - ${topic}")
+        log.info("User - ${createdBy}, Topic - ${name}")
         Subscription.withNewSession {
             new Subscription(topic: this, user:createdBy, seriousness: Seriousness.VERY_SERIOUS).save()
         }
-        Subscription.validationErrorsMap.size() == 0 ?log.info("subscription successful"):log.error("subscription fail for user - ${createdBy}, topic - ${topic} ")
+        Subscription.validationErrorsMap.size() == 0 ?log.info("subscription successful"):log.error("subscription fail for user - ${createdBy}, topic - ${name} ")
     }
 
     String toString(){

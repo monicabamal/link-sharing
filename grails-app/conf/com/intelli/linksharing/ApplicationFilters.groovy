@@ -3,7 +3,7 @@ package com.intelli.linksharing
 class ApplicationFilters {
 
     def filters = {
-        all(controller:'*', action:'*') {
+        /*all(controller:'*', action:'*') {
             before = {
                 log.info('Inside before filter')
             }
@@ -21,6 +21,6 @@ class ApplicationFilters {
                 }
             }
 
-        }
+        }*/
     }
 }

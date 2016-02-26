@@ -97,7 +97,7 @@ class BootStrap {
         List<ReadingItem> readingItems = []
         User.list().each { user ->
             Subscription.findAllByUser(user).each {subscription ->
-                Resource.findAllByCreatedByNotEqualAndTopic(user, subscription.topic).each { resource ->
+                Resource.findAllByCreatedByNotEqual(subscription.topic.createdBy).each { resource ->
                     if(!ReadingItem.findByResourceAndUser(resource, user)){
                         readingItems.add(new ReadingItem(user: user, resource: resource, isRead: false))
                     }
@@ -112,7 +112,8 @@ class BootStrap {
         log.info("Adding resource rating for all resources that are not read by user")
         List<ResourceRating> resourceRatingList = []
         ReadingItem.findAllByIsRead(false).each { resourceItem ->
-            resourceRatingList.add(new ResourceRating(resource: resourceItem.resource, user: resourceItem.user, score: 5))
+            if(!ResourceRating.findByResourceAndUser(resourceItem.resource,resourceItem.user))
+                resourceRatingList.add(new ResourceRating(resource: resourceItem.resource, user: resourceItem.user, score: 5))
         }
         ResourceRating.saveAll(resourceRatingList)
         ResourceRating.validationErrorsMap.size() == 0? log.info("Rating added to all resource successfully"):log.error("Error in adding rating to resources")
