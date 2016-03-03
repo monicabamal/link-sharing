@@ -1,14 +1,12 @@
 package com.intelli.linksharing
 
-import enums.Visibility
+import com.intelli.linksharing.enums.Visibility
 import grails.test.mixin.TestFor
-import spock.lang.IgnoreRest
 import spock.lang.Specification
 
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
-@TestFor(DocumentResource)
 class DocumentResourceSpec extends Specification {
 
     def setup() {
@@ -18,9 +16,9 @@ class DocumentResourceSpec extends Specification {
     }
 
     def "test filepath of resource"() {
-        setup: "user added resourse document"
-        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
-        Topic topic = new Topic(name: "Java", visibility: enums.Visibility.PUBLIC, createdBy: user)
+        setup: "user added resource document"
+        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",confirmPassword: "igdefault", firstName: "monica",lastName: "bamal");
+        Topic topic = new Topic(name: "Java", visibility: Visibility.PUBLIC, createdBy: user)
         DocumentResource documentResource = new DocumentResource(filePath: filepath, description: "topic description", topic: topic, createdBy: user)
 
         when: "check for validation"
@@ -34,7 +32,7 @@ class DocumentResourceSpec extends Specification {
         sno | filepath     | valid
         1   | " "          | false
         2   | null         | false
-        3   | "/home/ttnd" | true
+        3   | 'C://home/ttnd' | false
 
 
     }

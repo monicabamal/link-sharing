@@ -8,7 +8,6 @@ class LinkResource extends Resource{
         url url: true
     }
 
-    @Override
     String toString(){
         url
     }

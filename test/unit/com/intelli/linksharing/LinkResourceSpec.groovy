@@ -1,13 +1,12 @@
 package com.intelli.linksharing
 
+import com.intelli.linksharing.enums.Visibility
 import grails.test.mixin.TestFor
-import spock.lang.IgnoreRest
 import spock.lang.Specification
 
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
-@TestFor(LinkResource)
 class LinkResourceSpec extends Specification {
 
     def setup() {
@@ -19,7 +18,7 @@ class LinkResourceSpec extends Specification {
     void "validate link resource URL"() {
         setup: "user created Resource"
         User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
-        Topic topic = new Topic(name: "Java", visibility: enums.Visibility.PUBLIC, createdBy: user)
+        Topic topic = new Topic(name: "Java", visibility: Visibility.PUBLIC, createdBy: user)
         LinkResource linkResource = new LinkResource(url: url,description:"Instrumentation API" ,topic:topic ,createdBy:user )
 
         when: "check for validation"

@@ -100,7 +100,7 @@ log4j.main = {
     // Example of changing the log pattern for the default console appender:
     //
     appenders {
-        console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+        console name:'stdout', layout:pattern(conversionPattern: '[%-5p] %d %c - %m%n')
     }
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
@@ -114,5 +114,5 @@ log4j.main = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
-    debug  'grails.app.controllers.com.intelli.linksharing.UtilController'
+    debug  'grails.app'
 }

@@ -4,14 +4,10 @@ import grails.test.mixin.TestFor
 import spock.lang.IgnoreRest
 import spock.lang.Specification
 
-import java.beans.Visibility
-
-import static java.beans.Visibility.*
-
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
-@TestFor(Topic)
+
 class TopicSpec extends Specification {
 
     def setup() {
@@ -24,18 +20,18 @@ class TopicSpec extends Specification {
 
         given: ""
         String topicName = "Grails";
-        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
-        Topic topic = new Topic(name: topicName, createdBy: user, visibility: enums.Visibility.PUBLIC);
+        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault", confirmPassword: "igdefault",firstName: "monica",lastName: "bamal");
+        Topic topic = new Topic(name: topicName, createdBy: user, visibility: com.intelli.linksharing.enums.Visibility.PUBLIC);
 
-        when: "User will save"
-        topic.save();
+        when: "topic will save"
+        topic.save(flush: true);
 
         then: "check whether topic is saved or not"
         topic.count() == 1;
 
         when: "topic with same name"
-        Topic newTopic = new Topic(name: topicName, createdBy: user, visibility: enums.Visibility.PUBLIC);
-        newTopic.save();
+        Topic newTopic = new Topic(name: topicName, createdBy: user, visibility: com.intelli.linksharing.enums.Visibility.PUBLIC);
+        newTopic.save(flush: true);
 
         then:
         topic.count() == 1;
@@ -47,7 +43,7 @@ class TopicSpec extends Specification {
 
     def "Visibility should not be null & must be enum"() {
         setup: "user created topic"
-        Topic topic = new Topic(name: name, visibility:visibility )
+        Topic topic = new Topic(name: name, visibility: visibility)
 
         when: "check for validation"
         Boolean result = topic.validate()
@@ -68,19 +64,36 @@ class TopicSpec extends Specification {
 
     }
 
-    def "check toString method"(){
+    def "check toString method"() {
 
         given:
-        Topic topic = new Topic(name: name )
+        Topic topic = new Topic(name: name)
 
         expect:
         topic.toString() == result
 
         where:
-        sno|  name  | result
-         1 |"topic1"|"topic1"
-         2 |"topic2"|"topic2"
+        sno | name     | result
+        1   | "topic1" | "topic1"
+        2   | "topic2" | "topic2"
 
 
     }
+
+    def "convert string to enum"() {
+
+        when:
+        Enum value = com.intelli.linksharing.enums.Visibility.toEnum(string)
+
+        then:
+        value == result
+
+        where:
+        sno | string    | result
+        1   | "private" | com.intelli.linksharing.enums.Visibility.PRIVATE
+        2   | "public"  | com.intelli.linksharing.enums.Visibility.PUBLIC
+        3   | "dsdsd"   | com.intelli.linksharing.enums.Visibility.PUBLIC
+
+    }
+
 }

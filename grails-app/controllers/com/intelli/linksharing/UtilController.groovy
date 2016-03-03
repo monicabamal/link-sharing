@@ -12,7 +12,6 @@ class UtilController{
         }
         catch (Exception ex) {
             log.error('Divide by zero exception')
-            //throw new Exception(ex)
         }
         log.info('UtilController executed successfully');
     }

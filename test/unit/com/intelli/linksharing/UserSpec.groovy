@@ -1,14 +1,12 @@
 package com.intelli.linksharing
 
 import grails.test.mixin.TestFor
-import spock.lang.IgnoreRest
 import spock.lang.Specification
 
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
 
-@TestFor(User)
 class UserSpec extends Specification {
 
     def setup() {
@@ -20,30 +18,31 @@ class UserSpec extends Specification {
 
     def "Check email and user uniqueness"() {
         given: "User Object"
-        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
+        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault", confirmPassword: "igdefault",firstName: "monica",lastName: "bamal");
 
         when: "User will save"
-        user.save(flush: true);
+        user.save(flush: true)
 
         then: "check no. of records saved"
         user.count() == 1;
 
         when: ""
-        user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
-            user.save(flush: true);
+        user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault", confirmPassword: "igdefault1",firstName: "monica",lastName: "bamal");
+        user.save(flush: true);
 
         then:
         user.count() == 1;
         user.errors.allErrors != null
         user.errors.getFieldErrorCount('email') == 1;
         user.errors.getFieldErrorCount('username') == 1;
+        user.errors.hasFieldErrors('confirmPassword') == true
 
     }
 
     def "checking all fields"() {
 
         given: "Create object"
-        User user = new User(email: email,userName: userName,password: password, firstName: firstName, lastName: lastName)
+        User user = new User(email: email,username: username,password: password, firstName: firstName, lastName: lastName)
 
         when:
         boolean result = user.validate()
@@ -51,7 +50,7 @@ class UserSpec extends Specification {
         result == validate
 
         where:
-         sno|  password |   userName    |firstName| lastName |    email      | validate
+         sno|  password |   username    |firstName| lastName |    email      | validate
           1 |"igdefault"|"Monica Bamal" |"Monica" | "Bamal"  |     ""        | false
           2 |"igdefault"|"Monica Bamal" |"Monica" | "Bamal"  |    null       | false
           3 |"igdefault"|"Monica Bamal" |"Monica" | "Bamal"  |"invalid email"| false

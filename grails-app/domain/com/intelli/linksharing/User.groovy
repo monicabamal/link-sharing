@@ -1,7 +1,5 @@
 package com.intelli.linksharing
 
-import com.mysql.jdbc.Blob
-
 
 class User {
 
@@ -10,43 +8,47 @@ class User {
     String password
     String firstName
     String lastName
-    Byte []photo
+    Byte[] photo
     Boolean admin
     Boolean active
     Date dateCreated
     Date lastUpdated
+    String confirmPassword
 
-    static transients = ['name','confirmpassword']
 
-    static  hasMany = [topics: Topic,subscriptions: Subscription,readingItems: ReadingItem,resources: Resource]
+    static transients = ['name', 'confirmPassword']
+
+    static hasMany = [topics: Topic, subscriptions: Subscription, readingItems: ReadingItem, resources: Resource]
 
     static constraints = {
         email unique: true, email: true, blank: false
         username unique: true
-        password  blank: false, minSize: 5
+        password blank: false, minSize: 5
         firstName blank: false
-        lastName  blank: false
+        lastName blank: false
         photo nullable: true
         admin nullable: true
         active nullable: true
-       confirmpassword bindable:true, validator:{val, obj ->
-                                                    if(!session.user){
-                                                      if(val != obj.password)  return 'confirm password did not match with pasword'
-                                                        if(val == null) return 'confirm password is null'
-                                                     }
-                                                }
+        confirmPassword bindable: true, nullable: true, blank: true, validator: { val, obj ->
+            if(!obj.id){
+                if (val == null) return 'confirm password is null'
+                if (!val.equals(obj.password)) return 'confirm password did not match with password'
+            }
+        }
     }
+
 
     static mapping = {
         photo sqlType: "longblob"
+        sort id: 'desc'
     }
 
-    String getName(){
+    String getName() {
         "${firstName} ${lastName}"
     }
 
     @Override
-    String toString(){
+    String toString() {
         username
     }
 }

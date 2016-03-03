@@ -6,8 +6,8 @@ import com.intelli.linksharing.ResourceRating
 import com.intelli.linksharing.Subscription
 import com.intelli.linksharing.Topic
 import com.intelli.linksharing.User
-import enums.Seriousness
-import enums.Visibility
+import com.intelli.linksharing.enums.Seriousness
+import com.intelli.linksharing.enums.Visibility
 import groovy.LinkSharingConstants
 
 class BootStrap {
@@ -34,12 +34,12 @@ class BootStrap {
         if(!User.count) {
             log.info("No user found in records")
             log.info("creating 1 admin..")
-            User admin = new User(email: 'admin@gmail.com', password: LinkSharingConstants.DEFAULT_PASSWORD, firstName: 'monica', lastName: 'bamal',
+            User admin = new User(email: 'admin@gmail.com', password: LinkSharingConstants.DEFAULT_PASSWORD,confirmPassword: LinkSharingConstants.DEFAULT_PASSWORD, firstName: 'monica', lastName: 'bamal',
                     username: 'monicabamal', admin: true, active: true)
             admin.save(failOnError: true, flush: true)
             log.info('1 admin is created')
             log.info("creating 1 normal user..")
-            User normalUser = new User(email: 'normal@gmail.com', password: LinkSharingConstants.DEFAULT_PASSWORD, firstName: 'monica1', lastName: 'bamal1',
+            User normalUser = new User(email: 'normal@gmail.com', password: LinkSharingConstants.DEFAULT_PASSWORD, confirmPassword: LinkSharingConstants.DEFAULT_PASSWORD, firstName: 'monica1', lastName: 'bamal1',
                     username: 'monicabamal1', admin: false, active: true )
             normalUser.save(failOnError: true,flush: true)
             log.info('1 normal user is created')

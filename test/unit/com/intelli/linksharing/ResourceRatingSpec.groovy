@@ -1,12 +1,15 @@
 package com.intelli.linksharing
 
+import com.intelli.linksharing.enums.Visibility
+import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
-@TestFor(ResourceRating)
+
+@Mock([LinkResource])
 class ResourceRatingSpec extends Specification {
 
     def setup() {
@@ -19,8 +22,8 @@ class ResourceRatingSpec extends Specification {
 
         setup: "user giving rating to resource"
         User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
-        Topic topic = new Topic(name: "Java", visibility: enums.Visibility.PUBLIC, createdBy: user)
-        LinkResource linkResource = new LinkResource(url: url,description:"Instrumentation API" ,topic:topic ,createdBy:user )
+        Topic topic = new Topic(name: "Java", visibility: Visibility.PUBLIC, createdBy: user)
+        LinkResource linkResource = new LinkResource(url: 'http://www.google.com',description:"Instrumentation API" ,topic:topic ,createdBy:user )
         ResourceRating resourceRating = new ResourceRating(resource: linkResource, user: user, score: value)
 
         when: "check for validation"
@@ -42,12 +45,12 @@ class ResourceRatingSpec extends Specification {
 
         setup: "user rated resource"
         User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
-        Topic topic = new Topic(name: "Java", visibility: enums.Visibility.PUBLIC, createdBy: user)
-        LinkResource linkResource = new LinkResource(url: url,description:"Instrumentation API" ,topic:topic ,createdBy:user )
+        Topic topic = new Topic(name: "Java", visibility: Visibility.PUBLIC, createdBy: user)
+        LinkResource linkResource = new LinkResource(url: 'http://www.google.com',description:"Instrumentation API" ,topic:topic ,createdBy:user )
         ResourceRating resourceRating = new ResourceRating(resource: linkResource, user: user, score: 5)
 
         when:
-        resourceRating.save()
+        resourceRating.save(flush: true)
 
         then:
         ResourceRating.count() == 1
@@ -59,7 +62,7 @@ class ResourceRatingSpec extends Specification {
         then:
         ResourceRating.count() == 1
         resourceRatingNew.errors.allErrors.size() == 1
-        resourceRatingNew.errors.getFieldErrorCount('user') == 1
+        resourceRatingNew.errors.getFieldErrorCount('resource') == 1
 
 
     }

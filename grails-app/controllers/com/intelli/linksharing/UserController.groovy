@@ -2,19 +2,11 @@ package com.intelli.linksharing
 
 class UserController {
 
+    static  allowedMethods = [index: 'GET']
+
     def index() {
+        log.info('Inside UserController index action' )
         render "user dahsboard - ${session.user}"
     }
 
-    def  register(){
-        User user = new  User(firstName: '')
-        if(!user.validate()){
-             user.errors.allErrors.each {
-                 println "${it.code}"
-             }
-        }
-        else{
-            render "success"
-        }
-    }
 }

@@ -1,13 +1,14 @@
 package com.intelli.linksharing
 
+import com.intelli.linksharing.enums.Seriousness
+import com.intelli.linksharing.enums.Visibility
 import grails.test.mixin.TestFor
-import spock.lang.IgnoreRest
 import spock.lang.Specification
 
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
-@TestFor(Subscription)
+
 class SubscriptionSpec extends Specification {
 
     def setup() {
@@ -16,14 +17,13 @@ class SubscriptionSpec extends Specification {
     def cleanup() {
     }
 
-    @IgnoreRest
     void "check topic subscription uniqueness per user"() {
 
         setup: "user created topic"
         String topicName = "grails"
-        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",firstName: "monica",lastName: "bamal");
-        Topic topic = new Topic(name: topicName, visibility: enums.Visibility.PUBLIC, createdBy: user)
-        Subscription subscription = new Subscription(topic: topic, user: user, seriousness: enums.Seriousness.CASUAL)
+        User user = new User(email: "abc@gmail.com",username: "monicabamal", password: "igdefault",confirmPassword: "igdefault", firstName: "monica",lastName: "bamal");
+        Topic topic = new Topic(name: topicName, visibility: Visibility.PUBLIC, createdBy: user)
+        Subscription subscription = new Subscription(topic: topic, user: user, seriousness: Seriousness.CASUAL)
 
         when:
         subscription.save(flush: true)
@@ -32,7 +32,7 @@ class SubscriptionSpec extends Specification {
         Subscription.count() == 1
 
         when:
-        Subscription subscriptionNew = new Subscription(topic: topic, user: user, seriousness: enums.Seriousness.CASUAL)
+        Subscription subscriptionNew = new Subscription(topic: topic, user: user, seriousness: Seriousness.CASUAL)
         subscriptionNew.save(flush: true)
 
         then:

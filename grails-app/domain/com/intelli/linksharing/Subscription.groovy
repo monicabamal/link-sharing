@@ -1,16 +1,21 @@
 package com.intelli.linksharing
 
-import enums.Seriousness
+import com.intelli.linksharing.enums.Seriousness
 
-class Subscription implements  Serializable{
+class Subscription {
 
     Topic topic
     User user
-    Seriousness seriousness
+    Seriousness seriousness = Seriousness.SERIOUS
     Date dateCreated
     Date lastUpdated
 
     static constraints = {
         user unique: ['topic']
+    }
+
+    static mapping = {
+        topic lazy: false
+        user lazy: false
     }
 }
