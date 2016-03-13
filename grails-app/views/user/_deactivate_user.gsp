@@ -1,0 +1,1 @@
+<a onclick='$("\#${user.userName}_td").load("/user/deactivate/${user.userName}")'>Deactivate</a>

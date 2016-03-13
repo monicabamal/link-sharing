@@ -1,11 +1,11 @@
 package com.intelli.linksharing
 
 class DocumentResource extends Resource {
-
-    String filepath
+    String filePath
+    String  contentType
 
     static constraints = {
-        filepath blank: false
+        filePath blank: false
+        contentType blank : false
     }
-
 }

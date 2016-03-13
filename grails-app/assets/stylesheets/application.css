@@ -7,7 +7,42 @@
 * You're free to add application-wide styles to this file and they'll appear at the top of the
 * compiled file, but it's generally better to create a new file per style scope.
 *
-*= require main
-*= require mobile
+*= require bootstrap.min
+*= require freelancer
+*= require font-awesome.min
 *= require_self
 */
+
+.container-right{
+    float: right; width: 40%;
+}
+
+.con-border{
+    
+    margin: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left:50px;
+    box-shadow: 0 0 5px #000;
+    border-radius: 3px;
+
+}
+
+.container-left{
+    float: left; width: 40%;
+}
+
+.container{
+    height: 100%;
+}
+
+header{
+    height: 150px;
+    background-color: transparent;
+
+
+}
+
+body{
+    max-height: 100%;
+}

@@ -1,0 +1,1 @@
+<button class="btn btn-primary" onclick="$('#subscribe_button').load('/topic/subscribe/${id}')">Subscribe</button>

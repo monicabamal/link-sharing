@@ -1,58 +1,50 @@
 package com.intelli.linksharing
 
-import com.intelli.linksharing.co.ResourceSearchCO
-import com.intelli.linksharing.vo.RatingInfoVO
-
 abstract class Resource {
-
     String description
     User createdBy
     Topic topic
     Date dateCreated
     Date lastUpdated
 
-    static  transients = ['ratingInfo']
+    static belongsTo = [topic : Topic]
 
-    static hasMany = [ratings: ResourceRating, readingItems: ReadingItem]
+    static hasMany = [readingItems: ReadingItem, resourceRatings: ResourceRating]
 
     static mapping = {
-        description type: 'text'
+        tablePerHierarchy false
+        sort dateCreated: 'desc'
+        description column: 'description', sqlType: 'text'
     }
 
-    static  namedQueries = {
-        search{ ResourceSearchCO rco ->
-            if(rco.topicId){
-                eq(topic.id, rco.topicId)
+    static constraints = {
+        description size: 100..1024
+    }
+
+    def afterInsert= {
+        withNewSession {
+            Subscription[] subscriptions = Subscription.findAllByTopic(this.topic)
+            subscriptions.each { Subscription subscription ->
+                new ReadingItem(resource: this, user: subscription.user, isRead: false).save()
             }
-            if(rco.visibility){
-                eq(topic.visibility, rco.visibility)
-            }
+
         }
 
     }
 
-    def getRatingInfo(){
-
-        List<RatingInfoVO> ratingInfoVOs = []
-
-        def  ratingInfoList = Resource.createCriteria(){
-            projection{
-                count(ratings)
-                avg(ratings.score)
-                sum(ratings.score)
+    static namedQueries = {
+        recentPublicResources{
+            'topic'{
+                eq('visibility',Visibility.PUBLIC)
             }
-            ratings {
-                groupProperty(id)
-            }
+            order('dateCreated','desc')
+
         }
-        ratingInfoList.each {
-            RatingInfoVO ratingInfoVO = new RatingInfoVO()
-            ratingInfoVO.totalVotes = it[0]
-            ratingInfoVO.averageScore = it[1]
-            ratingInfoVO.totalScore = it[2]
-            ratingInfoVOs.add(ratingInfoVO)
-        }
-        ratingInfoVOs
+
+
     }
+
+
+
 
 }
